@@ -1,15 +1,18 @@
 pipeline {
     agent any
 
-    tools {
-        nodejs 'NodeJS-18'
-    }
-
     stages {
         stage('Clone Code') {
             steps {
                 git branch: 'main',
                     url: 'https://github.com/Grigary1/dlt.git'
+            }
+        }
+
+        stage('Check Node') {
+            steps {
+                sh 'node -v || echo "Node not found"'
+                sh 'npm -v || echo "NPM not found"'
             }
         }
 
