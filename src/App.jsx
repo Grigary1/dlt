@@ -9,6 +9,7 @@ function App() {
       <Route path='/' Component={Room}/>
         <Route path='/tic-tac' Component={Game}/>
         <Route path='/flappy-bird' Component={FlappyBird}/>
+        <Route path='/unknown' Component={FlappyBird}/>
     </Routes>
   )
 }
