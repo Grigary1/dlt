@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
 import confetti from "canvas-confetti";
+import { io } from "socket.io-client";
+import openSocket from 'socket.io-client';
+import socket from "../socket";
+
+
 
 const wins = [
     [1, 2, 3],
@@ -12,6 +17,8 @@ const wins = [
     [3, 5, 7],
 ];
 
+
+
 const Game = () => {
     const [player, setPlayer] = useState(1);
     const [winner, setWinner] = useState(null);
@@ -19,6 +26,19 @@ const Game = () => {
     const [pl1, setPl1] = useState(new Set());
     const [pl2, setPl2] = useState(new Set());
     const [board, setBoard] = useState(Array(9).fill(null));
+    useEffect(() => {
+        socket.connect();
+
+        return () => socket.disconnect();
+    }, []);
+
+
+
+    useEffect(() => {
+        socket.on("connect", () => {
+            console.log("user connected frontend");
+        });
+    }, [])
     const hasWin = (playerSet) => {
         for (const line of wins) {
             if (line.every((pos) => playerSet.has(pos))) return true;
@@ -119,8 +139,7 @@ const Game = () => {
                             onClick={() => handleClick(idx)}
                             className={`${cellBg} w-24 h-24 flex items-center justify-center
                 border-2 border-gray-800 text-3xl font-bold cursor-pointer
-                hover:bg-gray-200 transition select-none`}
-                        >
+                hover:bg-gray-200 transition select-none`}>
                             {cell}
                         </div>
                     );
@@ -142,3 +161,4 @@ const Game = () => {
 };
 
 export default Game;
+
